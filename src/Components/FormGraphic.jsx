@@ -96,7 +96,7 @@ export default class FormGraphic extends Component{
     }
     
     render(){
-        let dado = this.state.dados.find(el=>el.coluna===this.state.opcao)
+        let dado = this.state.dados.find(el=>el.coluna===this.state.opcao) || []
        
         return(
             <div className="perspectiva">
