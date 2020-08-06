@@ -44,10 +44,12 @@ function Graficos(props) {
                     }
                 }
                 //Separando os valores
+                var element = 0
+                var found = 0
                 for (let j = 0; j < dado.values.length; j++) {
-                    var element = dado.values[j]
+                    element = dado.values[j]
                     if(!(auxiliar.find(el=>el===element))){
-                        var found = dado.values.filter(el=>el===element)
+                        found = dado.values.filter(el=>el===element)
                         valores.push(found.length)
                         auxiliar.push(element)
                     }else{

@@ -29,7 +29,7 @@ function App() {
     document.body.appendChild(fileDownload);
     var data = new Date();
     fileDownload.href = source;
-    fileDownload.download = 'document'+'-'+data+'.doc';
+    fileDownload.download = "document" + "-" + data + ".doc";
     fileDownload.click();
     document.body.removeChild(fileDownload);
 

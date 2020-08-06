@@ -29,7 +29,6 @@ export default class Perpesctiva extends Component{
         
         
         dados.map(dado=>{
-          
             if(dado.coluna === "Ano de início no curso do PPGBot:"){
                 //Separando os labels - Inicio
                 
@@ -39,10 +38,12 @@ export default class Perpesctiva extends Component{
                     }
                 }
                 //Separando os valores - Inicio
+                var element = 0
+                var found = 0
                 for (let j = 0; j < dado.values.length; j++) {
-                    var element = dado.values[j]
+                    element = dado.values[j]
                     if(!(auxiliarInicio.find(el=>el===element))){
-                        var found = dado.values.filter(el=>el===element)
+                        found = dado.values.filter(el=>el===element)
                         valoresInicio.push(found[0])
                         auxiliarInicio.push(element)
                         found=0
@@ -60,9 +61,9 @@ export default class Perpesctiva extends Component{
                 }
                 //Separando os valores -Titulacao
                 for (let j = 0; j < dado.values.length; j++) {
-                    var element = dado.values[j]
+                    element = dado.values[j]
                     if(!(auxiliarTitulacao.find(el=>el===element))){
-                        var found = dado.values.filter(el=>el===element)
+                        found = dado.values.filter(el=>el===element)
                         valoresTitulacao.push(found[0])
                         auxiliarTitulacao.push(element)
                         found=0
@@ -152,12 +153,8 @@ export default class Perpesctiva extends Component{
 
     fetchBolsaAgencia(dados){
         let dataBA=[]
-        let chartDataBA={}
-
-        
-        
+        let chartDataBA={}        
         dados.map(dado=>{
-  
             if(dado.coluna === "Bolsista:"){
                 for (let j = 0; j < dado.values.length; j++) {
                     dataBA.push({valoresBolsa: dado.values[j],valoresAgencia: ''})
@@ -172,7 +169,6 @@ export default class Perpesctiva extends Component{
             }
            
         })
-
         //Preparando chart
         
         let label=[]
