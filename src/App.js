@@ -8,6 +8,7 @@ import Relatorio from './Components/Relatorio.jsx'
 import Config from './Components/Config.jsx'
 
 
+
 function App() {
   const openMenu = ()=>{
     document.querySelector(".sidebar").classList.add("open");

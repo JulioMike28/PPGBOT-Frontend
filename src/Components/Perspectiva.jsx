@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import Axios from 'axios'
+import api from '../service/api'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {Bar,Pie} from 'react-chartjs-2'
 import 'react-tabs/style/react-tabs.css';
@@ -13,7 +13,7 @@ export default class Perpesctiva extends Component{
     }
 
     fetchData = async()=>{
-        const {data} = await Axios.get("/api/excel")
+        const {data} = await api.get("/api/excel")
         
         this.setState({...this.state, dados:data})
     }

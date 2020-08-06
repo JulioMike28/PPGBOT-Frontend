@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react'
 import {Bar, Pie} from 'react-chartjs-2'
-import axios from 'axios';
+import api from '../service/api'
 
 function Graficos(props) {
 
@@ -8,7 +8,7 @@ function Graficos(props) {
 
     useEffect(()=>{
         const fetchData = async()=>{
-            const {data} = await axios.get("/api/excel")
+            const {data} = await api.get("/api/excel")
             setDados(data)
         }
         fetchData()

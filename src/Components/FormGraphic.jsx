@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Axios from 'axios'
+import api from '../service/api'
 import Input from './utils/Input.jsx'
 import {Bar, Pie} from 'react-chartjs-2'
 
@@ -14,7 +14,7 @@ export default class FormGraphic extends Component{
     }
     
     fetchData = async()=>{
-        const {data} = await Axios.get("/api/excel")
+        const {data} = await api.get("/api/excel")
         this.setState({...this.state, dados:data})
     }
     Timeout= async()=>{

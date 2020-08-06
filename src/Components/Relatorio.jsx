@@ -1,12 +1,12 @@
 import React, {useState, useEffect}from 'react'
-import axios from 'axios'
+import api from '../service/api'
 
 function Relatorio(props) {
     const [dados, setDados] = useState([])
 
     useEffect(()=>{
         const fetchData = async()=>{
-            const {data} = await axios.get("/api/excel")
+            const {data} = await api.get("/api/excel")
             setDados(data)
         }
         fetchData()
