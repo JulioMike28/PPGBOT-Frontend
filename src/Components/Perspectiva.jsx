@@ -28,7 +28,7 @@ export default class Perpesctiva extends Component{
         let chartDataAno={}
         
         
-        dados.map(dado=>{
+        dados.forEach(dado=>{
             if(dado.coluna === "Ano de início no curso do PPGBot:"){
                 //Separando os labels - Inicio
                 
@@ -38,14 +38,12 @@ export default class Perpesctiva extends Component{
                     }
                 }
                 //Separando os valores - Inicio
-                var element = 0
                 var found = 0
                 for (let j = 0; j < dado.values.length; j++) {
-                    element = dado.values[j]
-                    if(!(auxiliarInicio.find(el=>el===element))){
-                        found = dado.values.filter(el=>el===element)
+                    if(!(auxiliarInicio.find(el=>el===dado.values[j]))){
+                        found = dado.values.filter(el=>el===dado.values[j])
                         valoresInicio.push(found[0])
-                        auxiliarInicio.push(element)
+                        auxiliarInicio.push(dado.values[j])
                         found=0
                     }else{
 
@@ -61,11 +59,11 @@ export default class Perpesctiva extends Component{
                 }
                 //Separando os valores -Titulacao
                 for (let j = 0; j < dado.values.length; j++) {
-                    element = dado.values[j]
-                    if(!(auxiliarTitulacao.find(el=>el===element))){
-                        found = dado.values.filter(el=>el===element)
+                   
+                    if(!(auxiliarTitulacao.find(el=>el===dado.values[j]))){
+                        found = dado.values.filter(el=>el===dado.values[j])
                         valoresTitulacao.push(found[0])
-                        auxiliarTitulacao.push(element)
+                        auxiliarTitulacao.push(dado.values[j])
                         found=0
                     }else{
 
@@ -154,7 +152,7 @@ export default class Perpesctiva extends Component{
     fetchBolsaAgencia(dados){
         let dataBA=[]
         let chartDataBA={}        
-        dados.map(dado=>{
+        dados.forEach(dado=>{
             if(dado.coluna === "Bolsista:"){
                 for (let j = 0; j < dado.values.length; j++) {
                     dataBA.push({valoresBolsa: dado.values[j],valoresAgencia: ''})
