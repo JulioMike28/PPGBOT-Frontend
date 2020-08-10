@@ -7,13 +7,15 @@ export default class Config extends Component{
                 <div className="analise">
                     <div className="bo-header"> Arquivo Excel</div>
                     <div className="analise-body">
-                        Espaço reservado para alterar o caminho do arquivo Excel.
+                        <label for="idexcel">ID Arquivo Excel:</label>
+                        <input type="text" id="idexcel" name="idexcel"></input>
+                        <button> Salvar </button>
                     </div>
                 </div>
                 <div className="analise">
                     <div className="bo-header"> Usuários</div>
                     <div className="analise-body">
-                        Espaço reservado para alterar funções de usuarios.
+                        Tabela referente a usuários
                     </div>
                 </div>
             </div>

@@ -290,6 +290,23 @@ color: #ff8000;
   text-rendering: auto;
   padding: 20px;
 }
+.analise-body > input{
+  padding: 5px;
+  margin: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+}
+.analise-body > button{
+  padding: 9px;
+  font-size: 14px;
+  border: 1px solid gray;
+  color: white;
+  background-color: #005500;
+  border-radius: 10px;
+}
+.analise-body > button:hover{
+  cursor: pointer;
+}
 .close{
   float: left;
   font-size: 20px;
