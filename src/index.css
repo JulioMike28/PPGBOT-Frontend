@@ -217,8 +217,8 @@ color: #ff8000;
   align-items: center;
   padding: 10px;
   margin: 0px;
-  background-color: #005500;
-  color: #fff;
+  background-color: white;
+  color: #005500;
   box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   border-radius: 10px;
 }
@@ -281,12 +281,12 @@ color: #ff8000;
   margin: 10px;
   font-size: 18px;
   background-color:#aacfa4 ;
-  width: 100%;
+  width: 80%;
   border: 1px solid #aacfa4;
   border-radius: 10px;
 }
 .analise-body{
-  color:#fff;
+  color:#005500;
   text-rendering: auto;
   padding: 20px;
 }
@@ -295,4 +295,33 @@ color: #ff8000;
   font-size: 20px;
   padding: 10px;
 
+}
+
+.form-pesquisa{
+  padding:10px;
+  margin: 10px;
+  text-align: center;
+}
+.form-pesquisa > input{
+  padding: 10px;
+  margin: 10px;
+  border: .1rem solid gray;
+  border-radius: 10px;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.form-pesquisa > input:hover{
+  cursor: pointer;
+}
+.form-pesquisa > button{
+  padding: 10px;
+  border: .1rem solid #22cd22;
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #005500;
+  color: white;
+  box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.form-pesquisa > button:hover{
+  cursor: pointer;
 }

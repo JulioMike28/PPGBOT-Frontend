@@ -1,128 +1,79 @@
 import React,{Component} from 'react'
 import api from '../service/api'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import {Bar,Pie} from 'react-chartjs-2'
-import 'react-tabs/style/react-tabs.css';
+
 
 export default class Perpesctiva extends Component{
     constructor(props){
         super(props)
 
-        this.state = {dados:[]}
+        this.state = {dados:[], anoInicio: 0, anoTitulacao: 0, filtrados:[]}
+        this.handleChangeAnoTitulacao = this.handleChangeAnoTitulacao.bind(this)
+        this.handleChangeAnoInicio = this.handleChangeAnoInicio.bind(this)
+        this.filtro = this.filtro.bind(this)
+        this.fetchAno = this.fetchAno.bind(this)
+        this.fetchBolsaAgencia = this.fetchBolsaAgencia.bind(this)
         this.fetchData()
     }
 
     fetchData = async()=>{
-        const {data} = await api.get("/api/excel")
+        const {data} = await api.get("/api/perspectiva")
         
         this.setState({...this.state, dados:data})
     }
 
-    fetchAno(dados){
-        let labelInicio = []
-        let valoresInicio= []
-        let auxiliarInicio = []
-        let labelTitulacao = []
-        let valoresTitulacao= []
-        let auxiliarTitulacao = []
-        let chartDataAno={}
-        
-        
-        dados.forEach(dado=>{
-            if(dado.coluna === "Ano de início no curso do PPGBot:"){
-                //Separando os labels - Inicio
-                
-                for(let i=0; i<dado.values.length;i++){
-                    if((dado.values[i]) && !(labelInicio.find(el=> el===dado.values[i]))){     
-                        labelInicio.push(dado.values[i])  
-                    }
-                }
-                //Separando os valores - Inicio
-                var found = 0
-                for (let j = 0; j < dado.values.length; j++) {
-                    if(!(auxiliarInicio.find(el=>el===dado.values[j]))){
-                        found = dado.values.filter(el=>el===dado.values[j])
-                        valoresInicio.push(found[0])
-                        auxiliarInicio.push(dado.values[j])
-                        found=0
-                    }else{
+    fetchAno(filtrados){
+        let label = []
+        let valInicio = []
+        let contInicio = []
+        let cni = 0
+        let valTitulacao = []
+        let contTitulacao = []
+        let chartDataAno = {}
 
-                    }
-                }
+        filtrados.forEach(el=>{
+            label.push(el.AnoInicio)
+            label.push(el.AnoTitulacao)
+            valInicio.push(el.AnoInicio)
+            valTitulacao.push(el.AnoTitulacao)
+        })
+        console.log('Filtrados:', label)
+        console.log('valInicio:',valInicio)
+        console.log('valTitulacao:',valTitulacao);
+        //Label arrumado
+        let labelOrd = [ ...new Set(label.sort())]
+        //valores
+
+        labelOrd.forEach(el=>{
+            
+            if(valInicio.find(dado=>dado===el)){
+                contInicio.push(1)
+            }else{
+                contInicio.push(0)
             }
-            if(dado.coluna === "Ano de Titulação:"){
-                //Separando os labels - Titulacao
-                for(let i=0; i<dado.values.length;i++){
-                    if((dado.values[i]) && !(labelTitulacao.find(el=> el===dado.values[i]))){     
-                        labelTitulacao.push(dado.values[i])  
-                    }
-                }
-                //Separando os valores -Titulacao
-                for (let j = 0; j < dado.values.length; j++) {
-                   
-                    if(!(auxiliarTitulacao.find(el=>el===dado.values[j]))){
-                        found = dado.values.filter(el=>el===dado.values[j])
-                        valoresTitulacao.push(found[0])
-                        auxiliarTitulacao.push(dado.values[j])
-                        found=0
-                    }else{
 
+            let qnt = valTitulacao.find(dado=>dado===el)
+            if(qnt){
+                valTitulacao.forEach(el=>{
+                    if(el === qnt){
+                        cni++
                     }
-                }
+                })
+                contTitulacao.push(cni)
+                cni=0
+            }else{
+                contTitulacao.push(0)
             }
         })
-
-        //organizando Labels e valores
-
-        let label = []
-        let variavel=[]
-        for(let a=0; a<labelInicio.length;a++){
-            variavel = labelTitulacao.find(el=>el===labelInicio[a])
-            if(variavel){
-                label.push(variavel)
-            }else{
-                label.push(labelInicio[a])
-            }
-            if((labelTitulacao[a]) && !(label.find(el=>el===labelTitulacao[a]))){
-                label.push(labelTitulacao[a])
-            }
-        }
         
-        let labelOrd = label.sort()
-       
-        let valInicio = []
-        let valTitulacao = []
-        let found = []
-        let foundT = []
-        for (let d = 0; d < labelOrd.length; d++) {
-            found = valoresInicio.find(el=>el===label[d])
-            foundT = valoresTitulacao.find(el=>el===label[d])
-            if(found){ 
-             
-                valInicio.push(found.length)
-                found=[]
-            }else{
-                valInicio.push(0)
-                found=[]
-            }
-            if(foundT){
-                valTitulacao.push(foundT.length)
-                foundT=[]
-            }else{
-                valTitulacao.push(0)
-                foundT=[]
-            }
-            found=[]
-            foundT=[]
-        }
-       
-
+        console.log(contInicio)
+        console.log(contTitulacao);
         //Preparando chart
         chartDataAno={
             labels:labelOrd,
             datasets:[{
                 label: "Ano que início no curso do PPGBot:",
-                data: valInicio,
+                data: contInicio,
                 backgroundColor: 'rgba(50,252,50,0.5) ',
                 borderColor: '#32cd32',
                 borderWidth: 1,
@@ -130,7 +81,7 @@ export default class Perpesctiva extends Component{
                 hoverBorderColor: 'rgba(255,99,132,1)',
             },{
                 label: "Ano de Titulação:",
-                data: valTitulacao,
+                data: contTitulacao,
                 backgroundColor: 'rgba(255,252,50,0.5) ',
                 borderColor: '#ffcd32',
                 borderWidth: 1,
@@ -142,62 +93,53 @@ export default class Perpesctiva extends Component{
             <div>
                 <Bar
                 data={chartDataAno}
-                width={700}
+                width={400}
                 height={350}
                 options={{maintainAspectRatio:false}}/>
             </div>
         </div>
     }
-
+    
     fetchBolsaAgencia(dados){
-        let dataBA=[]
-        let chartDataBA={}        
-        dados.forEach(dado=>{
-            if(dado.coluna === "Bolsista:"){
-                for (let j = 0; j < dado.values.length; j++) {
-                    dataBA.push({valoresBolsa: dado.values[j],valoresAgencia: ''})
-                    
+        let labelBA=[]
+        let valoresBA=[]
+        let chartDataBA={}
+        let contCNPQ = 0
+        let contFAPERJ = 0
+        let contCAPES = 0
+
+        dados.forEach(el=>{
+            labelBA.push(el.Agencia)
+            if(el.Agencia === "CNPq"){
+                if(el.Bolsista === "Sim"){
+                    contCNPQ++
                 }
             }
-            if(dado.coluna === "Agência de Fomento:"){
-                for (let j = 0; j < dado.values.length; j++) {
-                    dataBA[j].valoresAgencia = dado.values[j]
-                    
+            if(el.Agencia === "FAPERJ"){
+                if(el.Bolsista === "Sim"){
+                    contFAPERJ++
                 }
             }
-           
-        })
-        //Preparando chart
-        
-        let label=[]
-        for (let k = 0; k < dataBA.length; k++) {
-            if((dataBA[k].valoresAgencia) && !(label.find(el=>el===dataBA[k].valoresAgencia))){
-                label.push(dataBA[k].valoresAgencia)
-            }
-            
-        }
-        
-     
-        let dataValores=[]
-        for (let m = 0; m < label.length; m++) {
-            var found = dataBA.find(el=>el.valoresAgencia === label[m])
-           
-            dataValores.push(found.valoresBolsa)
-        }
-        let val=[]
-        dataValores.forEach(el=>{
-            if(el === "Sim"){
-                val.push(1)
-            }else{
-                val.push(0)
+            if(el.Agencia === "CAPES"){
+                if(el.Bolsista === "Sim"){
+                    contCAPES++
+                }
             }
         })
-        console.log(val)
+        
+        valoresBA.push(contCNPQ)
+        valoresBA.push(contFAPERJ)
+        valoresBA.push(contCAPES)
+        contCNPQ = 0
+        contFAPERJ=0
+        contCAPES=0
+
+       
         chartDataBA={
-            labels:label,
+            labels:labelBA,
             datasets:[{
-                label: 'Nº de bolsas ' + label ,
-                data: val,
+                label: 'Nº de bolsas ' + labelBA ,
+                data: valoresBA,
                 backgroundColor: 'rgba(50,252,50,0.5) ',
                 borderColor: '#32cd32',
                 borderWidth: 1,
@@ -209,54 +151,62 @@ export default class Perpesctiva extends Component{
             <div>
                 <Pie
                 data={chartDataBA}
-                width={700}
+                width={400}
                 height={350}
                 options={{maintainAspectRatio:false}}/>
             </div>
         </div>
     }
 
+    handleChangeAnoInicio(e){
+        this.setState({...this.state, anoInicio: e.target.value})
+    }
+    handleChangeAnoTitulacao(e){
+        this.setState({...this.state, anoTitulacao: e.target.value})
+    }
+    
+    filtro(){
+        let dadosFiltrados = []
+    
+        if(this.state.anoInicio && this.state.anoTitulacao){
+            var inicio = this.state.anoInicio.split("-");
+            var titulacao = this.state.anoTitulacao.split("-");
+        }
+
+        this.state.dados.forEach(el=>{
+            if((el.AnoInicio >= inicio) && (el.AnoTitulacao <= titulacao)){
+                dadosFiltrados.push(el)
+            }
+        })
+        
+        console.log('Dados filtrados:',dadosFiltrados)
+        this.setState({...this.state, filtrados: dadosFiltrados})
+    }
+
     render(){
         return(
-            <React.Fragment>
-                <div className="tabs">
-                    <Tabs>
-                        <TabList>
-                        <Tab>Ano de início - Ano de Titulação</Tab>
-                        <Tab>Bolsas - Agência de Fomento</Tab>
-                        </TabList>
-                    
-                        <TabPanel>
-                            <div className="perspectiva">
-                                <div>
-                                    {this.fetchAno(this.state.dados)}
-                                </div>
-                                <div className="analise">
-                                    <div className="bo-header"> Analise dos dados</div>
-                                    <div className="analise-body">
-                                    Espaço reservado para uma análise escrita dos dados.
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </TabPanel>
-                        <TabPanel>
-                        <div className="perspectiva">
-                                <div>
-                                    {this.fetchBolsaAgencia(this.state.dados)}
-                                </div>
-                                <div className="analise">
-                                    <div className="bo-header"> Analise dos dados</div>
-                                    <div className="analise-body">
-                                        Espaço reservado para uma análise escrita dos dados.
-                                    </div>
-                                </div>
-                            </div>
-                        </TabPanel>
-                    </Tabs>
+          <React.Fragment>
+                {console.log(this.state.anoInicio)}
+                <div className="form-pesquisa">
+                    <input type="month" id="dataInicial" name="dataInicial" onChange={this.handleChangeAnoInicio}></input>
+                    <input type="month" id="dataFinal" name="dataFinal" onChange={this.handleChangeAnoTitulacao}></input>  
+                    <button onClick={this.filtro}>Pesquisar</button>
                 </div>
-                
-            </React.Fragment>
+                <div className="perspectiva">
+                    <div>
+                        {this.fetchBolsaAgencia(this.state.filtrados)}
+                    </div>
+                    <div>
+                        {this.fetchAno(this.state.filtrados)}
+                    </div>
+                    <div className="analise">
+                        <div className="bo-header"> Analise dos dados</div>
+                        <div className="analise-body">
+                            Espaço reservado para uma análise escrita dos dados.
+                        </div>
+                    </div>
+                </div>      
+          </React.Fragment>
         )
     }
 }
