@@ -89,13 +89,33 @@ export default class Perpesctiva extends Component{
                 hoverBorderColor: 'rgba(00,99,255,1)',
             }]
         }
+        const option = {
+            maintainAspectRatio: false ,
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    var total=0
+                    dataset.data.forEach(element => {
+                        total+=element
+                    });
+                    var currentValue = dataset.data[tooltipItem.index];
+                    var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                    return ' (' + percentage + '%)';
+                },
+                title: function(tooltipItem, data) {
+                  return data.labels[tooltipItem[0].index];
+                }
+              }
+            }
+          }
         return <div>
             <div>
                 <Bar
                 data={chartDataAno}
                 width={400}
                 height={350}
-                options={{maintainAspectRatio:false}}/>
+                options={option}/>
             </div>
         </div>
     }
@@ -109,7 +129,9 @@ export default class Perpesctiva extends Component{
         let contCAPES = 0
 
         dados.forEach(el=>{
-            labelBA.push(el.Agencia)
+            if(!(labelBA.find(x=>x===el.Agencia))){
+                labelBA.push(el.Agencia)
+            }
             if(el.Agencia === "CNPq"){
                 if(el.Bolsista === "Sim"){
                     contCNPQ++
@@ -147,13 +169,33 @@ export default class Perpesctiva extends Component{
                 hoverBorderColor: 'rgba(255,99,132,1)',
             }]
         }
+        const option = {
+            maintainAspectRatio: false ,
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                    var total=0
+                    dataset.data.forEach(element => {
+                        total+=element
+                    });
+                    var currentValue = dataset.data[tooltipItem.index];
+                    var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                    return ' (' + percentage + '%)';
+                },
+                title: function(tooltipItem, data) {
+                  return data.labels[tooltipItem[0].index];
+                }
+              }
+            }
+          }
         return <div>
             <div>
                 <Pie
                 data={chartDataBA}
                 width={400}
                 height={350}
-                options={{maintainAspectRatio:false}}/>
+                options={option}/>
             </div>
         </div>
     }

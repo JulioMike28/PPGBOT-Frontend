@@ -68,14 +68,34 @@ export default class FormGraphic extends Component{
                     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                     hoverBorderColor: 'rgba(255,99,132,1)',
                 }]
-            } 
+            }
+            const option = {
+                maintainAspectRatio: false ,
+                tooltips: {
+                  callbacks: {
+                    label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total=0
+                        dataset.data.forEach(element => {
+                            total+=element
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                        return ' (' + percentage + '%)';
+                    },
+                    title: function(tooltipItem, data) {
+                      return data.labels[tooltipItem[0].index];
+                    }
+                  }
+                }
+              }
             return <div>
                 <div>
                 <Bar 
                  data={chartData}
                  width={70}
                  height={185}
-                 options={{ maintainAspectRatio: false }}
+                 options={option}
                 />
                 </div> 
                 <div>
@@ -83,7 +103,7 @@ export default class FormGraphic extends Component{
                  data={chartData}
                  width={70}
                  height={185}
-                 options={{ maintainAspectRatio: false }}
+                 options={option}
                 />
                 </div>
                 
@@ -107,6 +127,7 @@ export default class FormGraphic extends Component{
                             <Input 
                                 name={dado.coluna}
                                 handleChange={this.handleChange}
+                                
                             />
                         )
                     })}

@@ -7,8 +7,6 @@ import Perspectiva from './Components/Perspectiva.jsx'
 import Relatorio from './Components/Relatorio.jsx'
 import Config from './Components/Config.jsx'
 
-
-
 function App() {
   const openMenu = ()=>{
     document.querySelector(".sidebar").classList.add("open");
@@ -28,19 +26,19 @@ function App() {
     var source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
     var fileDownload = document.createElement("a");
     document.body.appendChild(fileDownload);
-    var data = new Date();
+    var horario = new Date();
     fileDownload.href = source;
-    fileDownload.download = `document - ${data}.doc`;
+    fileDownload.download = `document - ${horario}.doc`;
     fileDownload.click();
     document.body.removeChild(fileDownload);
 
     alert('Dados exportados.');
   }
-
+ 
   return (
     <BrowserRouter>
       <div id="source-html" style={{display:"none"}}>
-        <Relatorio/>
+        <Relatorio />
       </div>
       <div className="grid-container">
         <header className="header">
@@ -50,12 +48,13 @@ function App() {
                 </button>
             </div>
             <div className="title">
-                Respostas do Formulário
+                <center>Respostas do Formulário</center>
             </div>
         </header>
         <aside className="sidebar">
             <h3>Menu</h3>
             <button className="sidebar-close-button" onClick={closeMenu}>Sair</button>
+            <button className="sidebar-close-button-up" onClick={closeMenu}>X</button>
             <div >
               <Link to="/respostas">
                 <h5 className="export">Ver todas as Respostas</h5>
@@ -130,7 +129,12 @@ function App() {
                 </div>
             </div > 
           </Route>
-          
+          <Route path="/export">
+            <Link to="/">
+              <h3 className="link">Voltar ao inicio</h3>
+            </Link>
+            <Relatorio/>
+          </Route>
           
             
           

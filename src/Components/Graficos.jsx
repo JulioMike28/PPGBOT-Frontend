@@ -67,9 +67,31 @@ function Graficos(props) {
                         data: valores,
                         backgroundColor: 'rgba(50,252,50,0.5) ',
                         borderColor: '#32cd32',
-                        color:'#22cd22'
+                        color:'#22cd22',
+                        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                        hoverBorderColor: 'rgba(255,99,132,1)',
                     }]
-                } 
+                }
+                const option = {
+                    maintainAspectRatio: false ,
+                    tooltips: {
+                      callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var total=0
+                            dataset.data.forEach(element => {
+                                total+=element
+                            });
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue/total*100).toFixed(1));
+                            return ' (' + percentage + '%)';
+                        },
+                        title: function(tooltipItem, data) {
+                          return data.labels[tooltipItem[0].index];
+                        }
+                      }
+                    }
+                  } 
                return( <li>
                     <div className="cards">
                         <div className="card">
@@ -80,7 +102,7 @@ function Graficos(props) {
                                         data={chartData}
                                         width={70}
                                         height={200}
-                                        options={{ maintainAspectRatio: false }}
+                                        options={option}
                                         />
                                 </div>
                                 <div>
@@ -88,7 +110,7 @@ function Graficos(props) {
                                         data={chartData}
                                         width={70}
                                         height={200}
-                                        options={{ maintainAspectRatio: false }}
+                                        options={option}
                                         />
                                 </div>
                                 
