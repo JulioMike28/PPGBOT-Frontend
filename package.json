@@ -10,6 +10,7 @@
     "chart.js": "^2.9.3",
     "chartjs": "^0.3.24",
     "google-spreadsheet": "^3.0.11",
+    "js-cookie": "^2.2.1",
     "plotly": "^1.0.6",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
