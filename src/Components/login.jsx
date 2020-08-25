@@ -13,10 +13,6 @@ function initialState() {
     return {user: '', password:''}
 }
 
-
-
-
-
 function Login(props) {
     
     const [ values, setValues] = useState(initialState);
@@ -54,6 +50,7 @@ function Login(props) {
             setSenhas(senha)
         }
         pegarDados();
+        
         return()=>{
 
         }
@@ -68,11 +65,19 @@ function Login(props) {
     }
     const verificar = ({user, password})=> {
 
-        let userVerificado = emails.filter(x=>x===user)
-        let senhaVerificado = senhas.filter(y=>y===password)
+        let userVerificado = ''
+        let senhaVerificado = ''
+        for (let i = 0; i < emails.length; i++) {
+            if(emails[i] === user){
+                userVerificado = emails[i]
+            }
+        }
+        for (let j = 0; j < senhas.length; j++) {
+            if(senhas[j] === password){
+                senhaVerificado = senhas[j]
+            }
+        }
     
-        console.log(userVerificado)
-        console.log(senhaVerificado)
         if(userVerificado && senhaVerificado){
             return {token: '1234'};
         }
