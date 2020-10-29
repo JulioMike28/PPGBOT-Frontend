@@ -7,11 +7,14 @@ export default class Perpesctiva extends Component{
     constructor(props){
         super(props)
 
-        this.state = {dados:[], anoInicio: 0, anoTitulacao: 0, filtrados:[]}
+        this.state = {dados:[], anoInicio: 0, anoTitulacao: 0, filtrados:[], mestrados:0,doutorados:0,total:0, faperj:0, cnpq:0 ,capes:0, totalBolsas:0}
         this.handleChangeAnoTitulacao = this.handleChangeAnoTitulacao.bind(this)
         this.handleChangeAnoInicio = this.handleChangeAnoInicio.bind(this)
         this.filtro = this.filtro.bind(this)
+        this.Mestrado = this.Mestrado.bind(this)
+        this.Doutorado = this.Doutorado.bind(this)
         this.fetchAno = this.fetchAno.bind(this)
+        this.handleBolsas = this.handleBolsas.bind(this)
         this.fetchBolsaAgencia = this.fetchBolsaAgencia.bind(this)
         this.fetchData()
     }
@@ -30,6 +33,7 @@ export default class Perpesctiva extends Component{
         let valTitulacao = []
         let contTitulacao = []
         let chartDataAno = {}
+        let cin= 0
 
         filtrados.forEach(el=>{
             label.push(el.AnoInicio)
@@ -38,16 +42,27 @@ export default class Perpesctiva extends Component{
             valTitulacao.push(el.AnoTitulacao)
         })
         console.log('Filtrados:', label)
+        //Label arrumado
+        let labelOrd = [ ...new Set(label.sort())];
+        //valores
+        console.log("------->LABEL:",labelOrd);
+        
         console.log('valInicio:',valInicio)
         console.log('valTitulacao:',valTitulacao);
-        //Label arrumado
-        let labelOrd = [ ...new Set(label.sort())]
-        //valores
+        
 
         labelOrd.forEach(el=>{
             
-            if(valInicio.find(dado=>dado===el)){
-                contInicio.push(1)
+            let qnt2 = valInicio.find(dado=>dado===el)
+            
+            if(qnt2){
+                valInicio.forEach(el=>{
+                    if(el === qnt2){
+                        cin++
+                    }
+                })
+                contInicio.push(cin)
+                cin=0
             }else{
                 contInicio.push(0)
             }
@@ -72,7 +87,7 @@ export default class Perpesctiva extends Component{
         chartDataAno={
             labels:labelOrd,
             datasets:[{
-                label: "Ano que início no curso do PPGBot:",
+                label: "Ano de início no curso do PPGBot:",
                 data: contInicio,
                 backgroundColor: 'rgba(50,252,50,0.5) ',
                 borderColor: '#32cd32',
@@ -128,9 +143,12 @@ export default class Perpesctiva extends Component{
         let contFAPERJ = 0
         let contCAPES = 0
 
+        console.log("DADOS ---------------------> ", dados)
+
         dados.forEach(el=>{
             if(!(labelBA.find(x=>x===el.Agencia))){
                 labelBA.push(el.Agencia)
+                console.log("------------------> el.Agencia: ", el.Agencia)
             }
             if(el.Agencia === "CNPq"){
                 if(el.Bolsista === "Sim"){
@@ -152,17 +170,27 @@ export default class Perpesctiva extends Component{
         valoresBA.push(contCNPQ)
         valoresBA.push(contFAPERJ)
         valoresBA.push(contCAPES)
-        contCNPQ = 0
-        contFAPERJ=0
-        contCAPES=0
-
-       
+        
+        console.log("---------------> labelBA: ", labelBA)
+        console.log("---------------> ValoresBA: ", valoresBA);
+        let vetor_back = []
+        let variavel=0
+        let variavel2=0
+        let variavel3=0
+        let el_back=0
+        labelBA.forEach(el=>{
+            variavel = Math.floor(Math.random() * 256)
+            variavel2 = Math.floor(Math.random() * 256)
+            variavel3 = Math.floor(Math.random() * 256)
+            el_back = 'rgba('+variavel+','+variavel2+','+variavel3+') '
+            vetor_back.push(el_back)
+        })
         chartDataBA={
             labels:labelBA,
             datasets:[{
                 label: 'Nº de bolsas ' + labelBA ,
                 data: valoresBA,
-                backgroundColor: 'rgba(50,252,50,0.5) ',
+                backgroundColor: vetor_back,
                 borderColor: '#32cd32',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -207,9 +235,51 @@ export default class Perpesctiva extends Component{
         this.setState({...this.state, anoTitulacao: e.target.value})
     }
     
+    handleBolsas(){
+        let labelBA=[]
+        let valoresBA=[]
+        let dados_b=this.state.dados
+        let contCNPQ = 0
+        let contFAPERJ = 0
+        let contCAPES = 0
+
+        dados_b.forEach(el=>{
+            if(!(labelBA.find(x=>x===el.Agencia))){
+                labelBA.push(el.Agencia)              
+            }
+            if(el.Agencia === "CNPq"){
+                if(el.Bolsista === "Sim"){
+                    contCNPQ++
+                }
+            }
+            if(el.Agencia === "FAPERJ"){
+                if(el.Bolsista === "Sim"){
+                    contFAPERJ++
+                }
+            }
+            if(el.Agencia === "CAPES"){
+                if(el.Bolsista === "Sim"){
+                    contCAPES++
+                }
+            }
+        })
+        let total_bolsas = contCNPQ + contFAPERJ + contCAPES
+        valoresBA.push(contCNPQ)
+        valoresBA.push(contFAPERJ)
+        valoresBA.push(contCAPES)
+        valoresBA.push(total_bolsas)
+    
+        
+        return valoresBA
+        
+        
+    }
     filtro(){
         let dadosFiltrados = []
-    
+        let qntMestrado = 0
+        let qntDoutorado = 0
+        let vetor_bolsas = []
+
         if(this.state.anoInicio && this.state.anoTitulacao){
             var inicio = this.state.anoInicio.split("-");
             var titulacao = this.state.anoTitulacao.split("-");
@@ -219,10 +289,58 @@ export default class Perpesctiva extends Component{
             if((el.AnoInicio >= inicio) && (el.AnoTitulacao <= titulacao)){
                 dadosFiltrados.push(el)
             }
+            if(el.Nivel === "Apenas Mestrado"){
+                qntMestrado++
+            }
+            if(el.Nivel === "Apenas Doutorado"){
+                qntDoutorado++
+            }
         })
         
-        console.log('Dados filtrados:',dadosFiltrados)
-        this.setState({...this.state, filtrados: dadosFiltrados})
+        let total_val = qntDoutorado + qntMestrado
+
+        
+        vetor_bolsas = this.handleBolsas()
+
+        this.setState({...this.state, filtrados: dadosFiltrados, mestrados: qntMestrado, doutorados: qntDoutorado, total: total_val, cnpq: vetor_bolsas[0], faperj: vetor_bolsas[1], capes: vetor_bolsas[2], totalBolsas: vetor_bolsas[3]})
+    }
+    Mestrado(){
+        let qntMestrado = 0
+        let MestradosFiltrados = []
+    
+        if(this.state.anoInicio && this.state.anoTitulacao){
+            var inicio = this.state.anoInicio.split("-");
+            var titulacao = this.state.anoTitulacao.split("-");
+        }
+
+        this.state.dados.forEach(el=>{
+            if((el.AnoInicio >= inicio) && (el.AnoTitulacao <= titulacao) && (el.Nivel === "Apenas Mestrado")){
+                MestradosFiltrados.push(el)
+                qntMestrado++
+            }
+        })
+        
+        console.log('Mestrados filtrados:',MestradosFiltrados)
+        this.setState({...this.state, filtrados: MestradosFiltrados, total: qntMestrado, mestrados: qntMestrado, doutorados:0})
+    }
+    Doutorado(){
+        let DoutoradosFiltrados = []
+        let qntDoutorado = 0
+    
+        if(this.state.anoInicio && this.state.anoTitulacao){
+            var inicio = this.state.anoInicio.split("-");
+            var titulacao = this.state.anoTitulacao.split("-");
+        }
+
+        this.state.dados.forEach(el=>{
+            if((el.AnoInicio >= inicio) && (el.AnoTitulacao <= titulacao) && (el.Nivel === "Apenas Doutorado")){
+                DoutoradosFiltrados.push(el)
+                qntDoutorado++
+            }
+        })
+        
+        console.log('Doutorados filtrados:',DoutoradosFiltrados)
+        this.setState({...this.state, filtrados: DoutoradosFiltrados, total:qntDoutorado, doutorados:qntDoutorado, mestrados:0})
     }
 
     render(){
@@ -232,11 +350,16 @@ export default class Perpesctiva extends Component{
                 <div className="form-pesquisa">
                     <input type="month" id="dataInicial" name="dataInicial" onChange={this.handleChangeAnoInicio}></input>
                     <input type="month" id="dataFinal" name="dataFinal" onChange={this.handleChangeAnoTitulacao}></input>  
-                    <button onClick={this.filtro}>Pesquisar</button>
+                    
+                    <button style={{marginRight:"20px",backgroundColor:"coral",border:"1px solid lightcoral"}} onClick={this.filtro}>Pesquisar Mestrado e Doutorado</button>
+                    <button style={{marginRight:"20px",backgroundColor:"dodgerblue",border:"1px solid aquamarine"}} onClick={this.Mestrado} >Pesquisar apenas Mestrado </button>
+                    <button style={{marginRight:"20px",backgroundColor:"limegreen",border:"1px solid limegreen"}} onClick={this.Doutorado}>Pesquisar apenas Doutorado </button>
                 </div>
+               
                 <div className="perspectiva">
+                    
                     <div>
-                        {this.fetchBolsaAgencia(this.state.filtrados)}
+                        {this.fetchBolsaAgencia(this.state.filtrados,this.state.agora)}
                     </div>
                     <div>
                         {this.fetchAno(this.state.filtrados)}
@@ -244,7 +367,21 @@ export default class Perpesctiva extends Component{
                     <div className="analise">
                         <div className="bo-header"> Analise dos dados</div>
                         <div className="analise-body">
-                            Espaço reservado para uma análise escrita dos dados.
+                            <div className="texto-perspectiva">
+                                { (this.state.total) ?
+                                    <React.Fragment>
+                                        <h5> Total de registros pesquisados: {this.state.total}</h5> 
+                                        {(this.state.mestrados)? <h6>Quantidade de Mestrados: {this.state.mestrados}</h6>:<h6>Quantidade de Mestrados: 0</h6>}
+                                        {(this.state.doutorados)? <h6>Quantidade de Doutorados: {this.state.doutorados}</h6>:<h6>Quantidade de Doutorados: 0</h6>}
+                                        <hr></hr>
+                                        <h5> Total de Bolsas: {this.state.totalBolsas}</h5>
+                                        {(this.state.faperj)? <h6>Quantidade de Bolsas FAPERJ: {this.state.faperj}</h6>:<h6>Quantidade de Bolsas FAPERJ: 0</h6>}
+                                        {(this.state.cnpq)? <h6>Quantidade de Bolsas CNPQ: {this.state.cnpq}</h6>:<h6>Quantidade de Bolsas CNPQ: 0</h6>}
+                                        {(this.state.capes)? <h6>Quantidade de Bolsas CAPES: {this.state.capes}</h6>:<h6>Quantidade de Bolsas CAPES: 0</h6>}    
+                                    </React.Fragment>
+                                :
+                                "Espaço reservado para uma análise escrita dos dados."}
+                            </div>
                         </div>
                     </div>
                 </div>      

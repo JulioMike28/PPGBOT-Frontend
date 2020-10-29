@@ -48,12 +48,11 @@ function Header(props) {
                         &#9776;
                     </button>
                 </div>
-                <div className="title">
-                    <center>Respostas do Formulário</center>
-                </div>
+                <center style={{fontSize:"20px",color:"white", marginLeft:"30px"}}>Programa de Pós-graduação em Botânica - UFRJ</center>
             </header>
+           
             <aside className="sidebar">
-                <h3>Menu</h3>
+                <h3>PPGBot</h3>
                 <button className="sidebar-close-button" onClick={logout}>Logout</button>
                 <button className="sidebar-close-button-up" onClick={closeMenu}>X</button>
                 <div >
