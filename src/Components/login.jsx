@@ -3,7 +3,7 @@ import StoreContext from '../Components/Store/Context'
 import { useState} from 'react'
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom'
-import icon from './images/cabecalho.png'
+import icon from './images/log_semfundo.png'
 
 import { useEffect } from 'react';
 const { GoogleSpreadsheet } = require('google-spreadsheet')

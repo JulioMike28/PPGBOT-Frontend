@@ -547,7 +547,7 @@ input[type="submit"]:hover{
 #login{
   position: absolute;
   top: 0px;
-  width: 88%;   
+  width: 100%;   
   padding: 18px 6% 60px 6%;
   margin: 0 0 35px 0;
   background: #f7f7f7;
