@@ -7,7 +7,6 @@ import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 import Graficos from './Graficos.jsx'
 import Perspectiva from './Perspectiva.jsx'
-//import Config from './Config.jsx'
 import ConfigNovo from './ConfigNovo.jsx'
 
 function Pai() {

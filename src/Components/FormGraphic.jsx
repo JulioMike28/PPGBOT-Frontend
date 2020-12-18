@@ -20,10 +20,10 @@ export default class FormGraphic extends Component{
     }
     Timeout= async()=>{
         setTimeout(()=>{
-            console.log('Timeout ativado 30s')
+            console.log('Timeout ativado 10s')
             this.fetchData()
             this.Timeout()
-        },30000)
+        },10000)
     }
 
     
