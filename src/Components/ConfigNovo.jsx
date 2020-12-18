@@ -173,15 +173,28 @@ function ConfigNovo(props){
                             </thead>
                             <tbody> 
                                 {
-                                    console.log(dadosConfig),
                                     dadosConfig ? 
                                         
                                         dadosConfig.map(coluna=>{
                                             let id = dadosConfig.findIndex(x=>x===coluna)
+                                            
                                             return <tr>
-                                                {coluna.map(el=>{
-                                                    return<td>{el.value}</td>    
-                                                })}
+                                                
+                                                {
+                                                    coluna.map(el=>{
+                                                        if(el.coluna==="senha"){
+                                                            console.log("El: ", el.value, "Tam:" ,el.value.length)
+                                                            let carc = "*"
+                                                            let mask = ""
+                                                            for(let i=0; i<el.value.length;i++){
+                                                                mask += carc
+                                                            }
+                                                            el.value = mask
+                                                        }
+                                                        return<td>{el.value}</td>    
+                                                     })
+                                                
+                                                }
                                                 
                                                 <td>
                                                     <button type="button" onClick={()=>Delete(id)} className="btnLixeira"><i  style={{color:"wihte"}}className="fa fa-remove"></i></button>
