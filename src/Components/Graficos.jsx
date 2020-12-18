@@ -77,9 +77,9 @@ function Graficos(props) {
                 let variavel3=0
                 let el_back=0
                 labels_reduzido.forEach(el=>{
-                    variavel = Math.floor(Math.random() * 256)
+                    variavel = Math.floor(Math.random() * 70)
                     variavel2 = Math.floor(Math.random() * 256)
-                    variavel3 = Math.floor(Math.random() * 256)
+                    variavel3 = Math.floor(Math.random() * 70)
                     el_back = 'rgba('+variavel+','+variavel2+','+variavel3+') '
                     vetor_back.push(el_back)
                 })

@@ -89,7 +89,7 @@ function ConfigNovo(props){
             const sheet = docConfig.sheetsByIndex[0]; // or use doc.sheetsById[id]
     
             sheet.addRow({nome: nome, email: email, senha: senha}).then((resp)=>{
-                alert('Sucesso');
+                alert('Sucesso usuário cadastrado...');
                 history.push('/home')
             })
             
@@ -118,10 +118,13 @@ function ConfigNovo(props){
         const sheet = docConfig.sheetsByIndex[0]; // or use doc.sheetsById[id]
         const rows = await sheet.getRows();
         rows[0]._rawData[3] = idnovo
-        await rows[0].save()
-        console.log('atualizou')
+        await rows[0].save().then(()=>{
+            alert('Atualizou o link de nova planilha')
+            history.push("/home")
+        })
+        
     }
-    const Delete = async (nomeExcluir) =>{
+    const Delete = async (idExcluir) =>{
         const docConfig = new GoogleSpreadsheet('1cBXuaO0uxvhJVp58HjxRQJ_aEZGqFsv4nzY1M_aeLcw')
 
         await docConfig.useServiceAccountAuth({
@@ -133,13 +136,12 @@ function ConfigNovo(props){
 
         const sheet = docConfig.sheetsByIndex[0]; // or use doc.sheetsById[id]
         const rows = await sheet.getRows();
-        let id = rows.findIndex(x=>x.nome===nomeExcluir)
-        console.log('id:',id)
-        if(id){
-            await rows[id].delete();
-        }
-        
-        console.log('deletou')
+
+        await rows[idExcluir].delete().then(()=>{
+            alert('Usuário excluido com sucesso....')
+            history.push('/home')
+        })
+    
     }
 
     return <React.Fragment>
@@ -151,7 +153,7 @@ function ConfigNovo(props){
                             <p> Arquivo atual: {docId}</p>
                             <label htmlFor="idexcel">Alterar Arquivo Excel:</label>
                             <input type="text" id="idexcel" name="idexcel" placeholder="digite o id do arquivo" onChange={(e)=>setUpadateDocId(e.target.value)}></input>
-                            <button type="submit" className="btnNovo btn"> Alterar </button>
+                            <button type="submit" className="btnNovo "> Alterar </button>
                         </form>
                        
                     </div>
@@ -171,17 +173,18 @@ function ConfigNovo(props){
                             </thead>
                             <tbody> 
                                 {
-                                    
+                                    console.log(dadosConfig),
                                     dadosConfig ? 
-
+                                        
                                         dadosConfig.map(coluna=>{
+                                            let id = dadosConfig.findIndex(x=>x===coluna)
                                             return <tr>
                                                 {coluna.map(el=>{
-                                                    console.log(el.value)
                                                     return<td>{el.value}</td>    
                                                 })}
+                                                
                                                 <td>
-                                                    <i onClick={()=> Delete(coluna.nome)} style={{color:"red"}}className="fa fa-remove"></i>
+                                                    <button type="button" onClick={()=>Delete(id)} className="btnLixeira"><i  style={{color:"wihte"}}className="fa fa-remove"></i></button>
                                                 </td>
                                             </tr>    
                                         })
@@ -201,7 +204,7 @@ function ConfigNovo(props){
                             <label htmlFor="senha" className="lblNovo">Senha:</label>
                             <input type="password" id="senha" name="senha" onChange={(e) => setSenha(e.target.value)} placeholder="digite a senha"></input>
                             <br></br>
-                            <button type="submit" className="btnNovo"> Salvar </button>
+                            <button type="submit" className=" btnNovo"> Salvar </button>
                         </form>
                     </div>
                 </div>

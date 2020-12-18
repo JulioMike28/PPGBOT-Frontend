@@ -158,7 +158,7 @@ export default class FormGraphic extends Component{
                 datasets:[{
                     label: "Mestrado",
                     data: valores_mestrado,
-                    backgroundColor: 'rgba(50,252,50,0.5) ',
+                    backgroundColor: 'rgba(50,252,50,1) ',
                     borderColor: '#32cd32',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(255,99,132,0.4)',
@@ -166,8 +166,8 @@ export default class FormGraphic extends Component{
                 },{
                     label: "Doutorado",
                     data: valores_doutorado,
-                    backgroundColor: 'rgba(255,252,50,0.5) ',
-                    borderColor: '#ffcd32',
+                    backgroundColor: 'rgba(34,139,34,1) ',
+                    borderColor: '#228b22',
                     borderWidth: 1,
                     hoverBackgroundColor: 'rgba(00,99,255,0.4)',
                     hoverBorderColor: 'rgba(00,99,255,1)',
@@ -269,9 +269,9 @@ export default class FormGraphic extends Component{
             let variavel3=0
             let el_back=0
             labels_reduzido.forEach(el=>{
-                variavel = Math.floor(Math.random() * 256)
+                variavel = Math.floor(Math.random() * 70)
                 variavel2 = Math.floor(Math.random() * 256)
-                variavel3 = Math.floor(Math.random() * 256)
+                variavel3 = Math.floor(Math.random() * 70)
                 el_back = 'rgba('+variavel+','+variavel2+','+variavel3+') '
                 vetor_back.push(el_back)
             })
