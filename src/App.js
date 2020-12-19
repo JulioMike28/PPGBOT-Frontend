@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {BrowserRouter, Route} from 'react-router-dom'
 import Login from './Components/login.jsx'
 import RouterPrivate from './Components/Routes/Private/Private'

@@ -20,10 +20,10 @@ export default class FormGraphic extends Component{
     }
     Timeout= async()=>{
         setTimeout(()=>{
-            console.log('Timeout ativado 10s')
+            console.log('Timeout ativado 30s')
             this.fetchData()
             this.Timeout()
-        },10000)
+        },30000)
     }
 
     
@@ -351,7 +351,7 @@ export default class FormGraphic extends Component{
                     })}
                 </div>
                 <div className="exibicao">
-                <div className="bo-header"> Apresentação dos dados - {(this.state.opcao)?this.state.opcao: "nenhum dado escolhido"}</div>
+                <div className="bo-header"> Apresentação dos dados - {(this.state.opcao)?this.state.opcao: "nenhum dado escolhido"}   {(this.state.opcao)?<button className="btn-header" style={{marginLeft:"20px"}} ><i className="fa fa-download"></i></button> : ""}</div>
                     {this.exibir(dado)}
                 </div>
                 {/*<div className="search">

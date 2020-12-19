@@ -1,10 +1,21 @@
 import React, {useState,useEffect} from 'react'
 import {Bar, Pie} from 'react-chartjs-2'
+import { saveAs } from 'file-saver'
 import api from '../service/api'
 
 function Graficos(props) {
 
     const [dados, setDados] = useState([])
+
+    const saveCanvas = (nome) =>{
+        const barraSave = document.getElementById('barraG');
+        const pizzaSave = document.getElementById('pizzaG');
+        barraSave.toBlob(function (blob){
+            saveAs(blob, "barra.png")
+        })
+       
+    
+    }
 
     useEffect(()=>{
         const fetchData = async()=>{
@@ -119,10 +130,14 @@ function Graficos(props) {
                return( <li>
                     <div className="cards">
                         <div className="card">
-                            <div className="card-header"><h3>{dado.coluna}</h3> </div>
+                            <div className="card-header">
+                                <h3 style={{marginLeft:"20px"}}>{dado.coluna}</h3> 
+                                <button className="btn-header" style={{marginLeft:"20px"}} ><i className="fa fa-download"></i></button>
+                            </div>
                             <div className="card-body">
                                 <div>
                                     <Bar
+                                        id="barraG"
                                         data={chartData}
                                         width={70}
                                         height={200}
@@ -131,6 +146,7 @@ function Graficos(props) {
                                 </div>
                                 <div>
                                     <Pie
+                                        id="pizzaG"
                                         data={chartData}
                                         width={70}
                                         height={200}

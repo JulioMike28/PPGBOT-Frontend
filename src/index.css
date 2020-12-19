@@ -164,10 +164,29 @@ color: #ff8000;
   color: #005500;
   font-size: 18px;
   text-align: center;
+  display: flex;
   align-items: center;
+  flex-direction: space-between;
   border-radius: 10px;
   width: 100%;
   box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.btn-header{
+  background-color: green;
+  color:white;
+  width: 50px;
+  height:30px;
+  border: 1px solid #22cd22;
+  border-radius:4px;
+}
+.btn-header:hover{
+  cursor: pointer;
+}
+.btn-header:active{
+  box-shadow: 2px 6px rgba(100,200,100,0.5);
+}
+.btn-header::after{
+  box-shadow: 2px 6px rgba(100,200,100,0.5);
 }
 .card-body{
   font-size: 18px;
